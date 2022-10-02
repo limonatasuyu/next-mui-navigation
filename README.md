@@ -1,3 +1,12 @@
+# Navigation example with next and react material-ui
+
+[Go to site](https://next-mui-navigation.herokuapp.com/)
+
+
+<br/>
+
+## Default Next Readme
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
