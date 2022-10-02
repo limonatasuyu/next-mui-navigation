@@ -9,7 +9,7 @@ const Layout : NextPage = (props) => {
 		<>
 			<Sidebar />
 			<div style={{marginLeft: 100, marginTop: 50}}>
-			  {props.children}
+			  {props && props.children}
 		  </div>
 		</>
 
