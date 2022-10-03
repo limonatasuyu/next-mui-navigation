@@ -12,7 +12,7 @@ export default function Layout({children}: layoutProps) {
 	return (
 		<>
 			<Sidebar />
-			<div style={{marginLeft: 100, marginTop: 50}}>
+			<div style={{marginLeft: '50rem', marginTop: 50}}>
 			  {children}
 		  </div>
 		</>
