@@ -65,7 +65,7 @@ export default function Sidebar() {
   return (
     <div>
       <Button sx={{'right': '5rem', 'position': 'fixed', 'bgcolor': 'blue'}} onClick={toggleDrawer(true)}>{isBarOpened ? <MenuOpenIcon /> :  <MenuIcon />}</Button>
-      <Drawer anchor={'left'} open={isBarOpened} onClose={toggleDrawer(false)}>
+      <Drawer anchor={'left'} open={isBarOpened} onClose={toggleDrawer(false)} onOpen={toggleDrawer(true)}>
         <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
           <List>
             <CloseNavButton />
