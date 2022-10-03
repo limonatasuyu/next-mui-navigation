@@ -21,7 +21,6 @@ import Button from '@mui/material/Button'; // Component that is almost the same 
 import MenuIcon from '@mui/icons-material/Menu';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 
-
 import Link from 'next/link'
 
 const categories = [
@@ -71,7 +70,7 @@ export default function Navigator(props: DrawerProps) {
    const [isBarOpened, setIsBarOpened] = React.useState(false);
 
    // The function that is gonna close or open the sidebar (the event argument needs to be KeyboardEvent or MouseEvent)
-   const toggleDrawer = (open: boolean) => (event: KeyboardEvent | MouseEvent) => {setIsBarOpened(open);};
+   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {setIsBarOpened(open);};
 
 
    const CloseNavButton = () => {
@@ -106,10 +105,10 @@ export default function Navigator(props: DrawerProps) {
             <ListItem sx={{ py: 2, px: 3 }}>
               <ListItemText sx={{ color: '#000' }}>{id}</ListItemText>
             </ListItem>
-            {children.map(({ id: childId, icon, active, href }) => (
+            {children.map(({ id: childId, icon, href }) => (
               <ListItem disablePadding key={childId}>
                 <Link href={href}>
-                  <ListItemButton selected={active} sx={item}>
+                  <ListItemButton sx={item}>
                     <ListItemIcon>{icon}</ListItemIcon>
                     <ListItemText>{childId}</ListItemText>
                   </ListItemButton>
