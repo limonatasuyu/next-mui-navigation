@@ -226,7 +226,7 @@ export default function MiniDrawer(props: {Page: React.ReactNode}) {
         </Box>
         )})}
       </Drawer>
-      <Box>{props.Page}</Box>
+      <Box sx={{width: '100%'}}>{props.Page}</Box>
     </Box>
   );
 }
