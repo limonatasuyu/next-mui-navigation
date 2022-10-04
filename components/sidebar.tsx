@@ -1,207 +1,232 @@
-
 import * as React from 'react';
-import Divider from '@mui/material/Divider';
-import Drawer, { DrawerProps } from '@mui/material/Drawer';
-import List from '@mui/material/List';
+import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import MuiDrawer from '@mui/material/Drawer';
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import List from '@mui/material/List';
+import CssBaseline from '@mui/material/CssBaseline';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import MailIcon from '@mui/icons-material/Mail';;
 import HomeIcon from '@mui/icons-material/Home';
-import PeopleIcon from '@mui/icons-material/People';
-import DnsRoundedIcon from '@mui/icons-material/DnsRounded';
-import PermMediaOutlinedIcon from '@mui/icons-material/PhotoSizeSelectActual';
-import PublicIcon from '@mui/icons-material/Public';
-import TimerIcon from '@mui/icons-material/Timer';
-import SettingsIcon from '@mui/icons-material/Settings';
-import PhonelinkSetupIcon from '@mui/icons-material/PhonelinkSetup';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import Button from '@mui/material/Button'; // Component that is almost the same thing as the default button element but with mui features
-import MenuIcon from '@mui/icons-material/Menu';
-import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
-const categories = [
-  {
-    id: 'Build',
-    children: [
-      {
-        id: 'page_1',
-        icon: <PeopleIcon />,
-        href: '/page_1',
-      },
-      { id: 'page_2', icon: <DnsRoundedIcon /> , href: '/page_2',},
-      { id: 'page_3', icon: <PermMediaOutlinedIcon />, href: '/page_3', },
-      { id: 'page_4', icon: <PublicIcon />, href: '/page_4',},
-    ],
+const drawerWidth = 240;
+
+const openedMixin = (theme: Theme): CSSObject => ({
+  width: drawerWidth,
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.enteringScreen,
+  }),
+  overflowX: 'hidden',
+});
+
+const closedMixin = (theme: Theme): CSSObject => ({
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  overflowX: 'hidden',
+  width: `calc(${theme.spacing(7)} + 1px)`,
+  [theme.breakpoints.up('sm')]: {
+    width: `calc(${theme.spacing(8)} + 1px)`,
   },
-  {
-    id: 'Quality',
-    children: [
-      { id: 'page_1', icon: <SettingsIcon />, href: '/page_1', },
-      { id: 'page_2', icon: <TimerIcon /> , href: '/page_2',},
-      { id: 'page_3', icon: <PhonelinkSetupIcon />, href: '/page_3',},
-    ],
-  },
-];
+});
 
-const item = {
-  py: '2px',
-  px: 3,
-  color: 'rgba(0, 0, 0, 0.7)',
-  '&:hover, &:focus': {
-    bgcolor: 'rgba(0, 0, 0, 0.08)',
-  },
-};
+const DrawerHeader = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+  padding: theme.spacing(0, 1),
+  // necessary for content to be below app bar
+  ...theme.mixins.toolbar,
+}));
 
-const itemCategory = {
-  boxShadow: '0 -1px 0 rgb(0,0,0,0.1) inset',
-  py: 1.5,
-  px: 3,
-};
-
-export default function Navigator(props: DrawerProps) {
-  const { ...other } = props;
-
-
-   // The state of sidebar
-   const [isBarOpened, setIsBarOpened] = React.useState(false);
-
-   // The function that is gonna close or open the sidebar (the event argument needs to be KeyboardEvent or MouseEvent)
-   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {setIsBarOpened(open);};
-
-
-   const CloseNavButton = () => {
-   return (
-     <ListItem style={{backgroundColor: '#DFDFDF'}} >
-       <ListItemButton onClick={toggleDrawer(false)}>
-         <HighlightOffIcon></HighlightOffIcon>
-       </ListItemButton>
-     </ListItem>
-   )
- }
-
-  return (
-    <div>
-    <Button sx={{'right': '5rem', 'position': 'fixed', 'bgcolor': 'blue'}} onClick={toggleDrawer(true)}>{isBarOpened ? <MenuOpenIcon /> :  <MenuIcon />}</Button>
-
-    <Drawer open={isBarOpened} {...other}>
-      <List disablePadding>
-        <ListItem sx={{ ...item, ...itemCategory, fontSize: 22, color: '#000' }}>
-          Paperbase
-        </ListItem>
-        <Link href='/'>
-          <ListItem sx={{ ...item, ...itemCategory, cursor: 'pointer' }}>
-              <ListItemIcon>
-                <HomeIcon />
-              </ListItemIcon>
-            <ListItemText>Home</ListItemText>
-          </ListItem>
-        </Link>
-        {categories.map(({ id, children }) => (
-          <Box key={id} sx={{ bgcolor: '#fff' }}>
-            <ListItem sx={{ py: 2, px: 3 }}>
-              <ListItemText sx={{ color: '#000' }}>{id}</ListItemText>
-            </ListItem>
-            {children.map(({ id: childId, icon, href }) => (
-              <ListItem disablePadding key={childId}>
-                <Link href={href}>
-                  <ListItemButton sx={item}>
-                    <ListItemIcon>{icon}</ListItemIcon>
-                    <ListItemText>{childId}</ListItemText>
-                  </ListItemButton>
-                </Link>
-              </ListItem>
-            ))}
-            <Divider sx={{ mt: 2 }} />
-          </Box>
-        ))}
-        <CloseNavButton />
-      </List>
-    </Drawer>
-    </div>
-  );
+interface AppBarProps extends MuiAppBarProps {
+  open?: boolean;
 }
 
+const AppBar = styled(MuiAppBar, {
+  shouldForwardProp: (prop) => prop !== 'open',
+})<AppBarProps>(({ theme, open }) => ({
+  zIndex: theme.zIndex.drawer + 1,
+  transition: theme.transitions.create(['width', 'margin'], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  }),
+}));
 
-/*// Creating the sidebar component that is gonna be used for navigation
-
-// useState needed for manipuating the state and getting the state info
-// KeyboardEvent and MouseEvent is needed for '''''''''''''''''
-import {useState, KeyboardEvent, MouseEvent} from 'react';
-
-// Importing mui components i'm going to build sidebar with
-import Box from '@mui/material/Box'; // Box component is like a default div but i can use custom props that are for mui components (such as sx) too 
-import Drawer from '@mui/material/SwipeableDrawer'; // Drawer component is basically the template i'm gonna use for the sidebar
-import Button from '@mui/material/Button'; // Component that is almost the same thing as the default button element but with mui features
-import List from '@mui/material/List'; // "Lists are continuous, vertical indexes of text or images." (quote from docs)
-import ListItem from '@mui/material/ListItem'; // List and ListItem componets are like the ul (or ol) and li elements on html
-import ListItemButton from '@mui/material/ListItemButton'; // These 3 are wrappers for the elements inside navigation
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-
-// Link component is needed for navigation's functionality
-import Link from 'next/link';
-
-// Importing Icons
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import MenuIcon from '@mui/icons-material/Menu';
-import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import HomeIcon from '@mui/icons-material/Home';
-
-
-// Declaring the Sidebar component
-export default function Sidebar() {
-  
-  // The state of sidebar
-  const [isBarOpened, setIsBarOpened] = useState(false);
-
-  // The function that is gonna close or open the sidebar (the event argument needs to be KeyboardEvent or MouseEvent)
-  const toggleDrawer = (open: boolean) => (event: KeyboardEvent | MouseEvent) => {setIsBarOpened(open);};
+const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+  ({ theme, open }) => ({
+    width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: 'nowrap',
+    boxSizing: 'border-box',
+    ...(open && {
+      ...openedMixin(theme),
+      '& .MuiDrawer-paper': openedMixin(theme),
+    }),
+    ...(!open && {
+      ...closedMixin(theme),
+      '& .MuiDrawer-paper': closedMixin(theme),
+    }),
+  }),
+);
 
 
-  const CloseNavButton = () => {
+export default function MiniDrawer(props: {Page: React.ReactNode}) {
+  const theme = useTheme();
+  const [open, setOpen] = React.useState(false);
+  const [leaveOpened, setLeaveOpened] = React.useState(false)
+  const [isHovering, setIsHovering] = React.useState(false)
 
-    return (
-      <ListItem style={{backgroundColor: '#DFDFDF'}} >
-        <ListItemButton onClick={toggleDrawer(false)}>
-          <HighlightOffIcon></HighlightOffIcon>
-        </ListItemButton>
-      </ListItem>
-    )
+  const router = useRouter()
+
+  const handleLeaveOpenedOpen = () => {
+    setLeaveOpened(true)
   }
 
-  // 
-  const Items = ['home', 'page_1', 'page_2', 'page_3'].map((text, index) => (
-    <ListItem key={text} disablePadding>
-      <Link href={text === 'home' ? '/' : `/${text}`}>
-        <ListItemButton>
-          <ListItemIcon>
-            {text === 'home' ? <HomeIcon /> :
-            index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-          </ListItemIcon>
-          <ListItemText primary={text} />
-        </ListItemButton>
+  const handleLeaveOpenedClose = () => {
+    setLeaveOpened(false)
+  }
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    if (!leaveOpened) setOpen(false);
+  };
+
+  const drawerItems = ['page_1', 'page_2', 'page_3', 'page_4'].map((text, index) => (
+    <ListItem key={text} disablePadding 
+      sx={{
+        display: 'block',
+        borderRadius: '50px',
+        width: '92%',
+        ml: '4%',
+        mt:'5px',
+        color: `${router.pathname === `/${text}` ? 'rgb(36, 153, 239)' : ''}`
+      }}>
+      <Link href={`/${text}`}>
+      <ListItemButton
+        sx={{
+          minHeight: 48,
+          justifyContent: open ? 'initial' : 'center',
+          px: 2.5,
+          bgcolor: `${router.pathname === `/${text}` ? 'rgb(242, 249, 254)' : ''}`,
+          borderRadius: '15px'
+        }}
+      >
+        <ListItemIcon
+          sx={{
+            minWidth: 0,
+            mr: open ? 3 : 'auto',
+            justifyContent: 'center',
+          }}
+        >
+          {index % 2 === 0 ? <InboxIcon sx={{color: `${router.pathname === `/${text}` ? 'rgb(36, 153, 239)' : ''}`}}/> : <MailIcon sx={{color: `${router.pathname === `/${text}` ? 'rgb(36, 153, 239)' : ''}`}}/>}
+        </ListItemIcon>
+        <ListItemText primary={text} sx={{ opacity: open ? 1 : 0, fontSize: '13px', fontWeight: '500' }} disableTypography />
+      </ListItemButton>
       </Link>
     </ListItem>
-  ))
+  ))    
+
+
+  React.useEffect(()=> {
+    setOpen(leaveOpened )
+  }, [leaveOpened])
+
 
   return (
-    <div>
-      <Button sx={{'right': '5rem', 'position': 'fixed', 'bgcolor': 'blue'}} onClick={toggleDrawer(true)}>{isBarOpened ? <MenuOpenIcon /> :  <MenuIcon />}</Button>
-      <Drawer anchor={'left'} open={isBarOpened} onClose={toggleDrawer(false)} onOpen={toggleDrawer(true)}>
-        <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
+    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
+      <Drawer variant="permanent" open={open} 
+        onMouseEnter={() => {handleDrawerOpen(); setIsHovering(true)}} 
+        onMouseLeave={() => {handleDrawerClose(); setIsHovering(false)}}
+        PaperProps={{
+
+          sx: {
+            border: 'none',
+            '&::-webkit-scrollbar': { WebkitAppearance: 'none', width: '5px' },
+            '&::-webkit-scrollbar-thumb': {
+            borderRadius: 8,
+            backgroundColor: `${isHovering ? 'rgb(95, 116, 141)': 'initial'}`,
+          },
+          }
+        }}
+      
+      >
+        <DrawerHeader>
+          <IconButton onClick={leaveOpened ? handleLeaveOpenedClose :  handleLeaveOpenedOpen}>
+            {leaveOpened ? <ChevronLeftIcon /> : <ChevronRightIcon /> }
+          </IconButton>
+        </DrawerHeader>
+        <ListItem key={'Home'} disablePadding 
+          sx={{
+          display: 'block',
+          borderRadius: '50px',
+          width: '92%',
+          ml: '4%',
+          mt:'5px',
+          color: `${router.pathname === '/' ? 'rgb(36, 153, 239)' : ''}`
+        }}>
+        <Link href='/'>
+      <ListItemButton
+        sx={{
+          minHeight: 48,
+          justifyContent: open ? 'initial' : 'center',
+          px: 2.5,
+          bgcolor: `${router.pathname === '/' ? 'rgb(242, 249, 254)' : ''}`,
+          borderRadius: '15px'
+
+        }}
+      >
+        <ListItemIcon
+          sx={{
+            minWidth: 0,
+            mr: open ? 3 : 'auto',
+            justifyContent: 'center',
+          }}
+        >
+          <HomeIcon sx={{color: `${router.pathname === '/' ? 'rgb(36, 153, 239)' : ''}`}}/>
+        </ListItemIcon>
+        <ListItemText primary={'home'} sx={{ opacity: open ? 1 : 0, fontSize: '13px', fontWeight: '500' }} disableTypography />
+      </ListItemButton>
+      </Link>
+    </ListItem>
+        {[0, 1, 2, 3, 4].map((i) => {return (
+          <Box key={i}>
+          <ListItem sx={{ py: 2, px: 3 }}>
+            <ListItemText sx={{color: 'gray', fontWeight: 700, height: '1rem', width: `${drawerWidth}px`, opacity: `${open ? 1 : 0}`}} disableTypography>SECTİON</ListItemText>
+          </ListItem>
           <List>
-            <CloseNavButton />
-            {Items}
+            {drawerItems}
           </List>
         </Box>
+        )})}
       </Drawer>
-    </div>
+      <Box>{props.Page}</Box>
+    </Box>
   );
 }
-*/

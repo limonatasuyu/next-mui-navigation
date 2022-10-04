@@ -9,14 +9,6 @@ interface layoutProps {children: ReactNode}
 // declaring the layout component ('props' is type of 'layoutProps')
 export default function Layout({children}: layoutProps) {
 
-	return (
-		<>
-			<Sidebar />
-			<div style={{marginLeft: '50rem', marginTop: 50}}>
-			  {children}
-		  </div>
-		</>
-
-	)
+	return <Sidebar Page={children}/>
 }
 
