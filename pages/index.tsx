@@ -17,8 +17,6 @@ type rawData = {
   firstName: string
   id: string
   lastName: string 
-  picture: string
-  title : string
 }
 
 function DataTable(props: {data: rawData[]}) {
@@ -40,12 +38,13 @@ function DataTable(props: {data: rawData[]}) {
   );
 }
 
-
-const fetcher = () => axios.get('https://dummyapi.io/data/v1/user?page=1&limit=20', {headers: {'app-id': '633f5f01d876772e0d9c5bfd'}}).then(res => res.data)
+//const url = 'https://dummyapi.io/data/v1/user?page=1&limit=20'
+const url = 'http://localhost:3000/api/people'
+const fetcher = () => axios.get(url).then(res => res.data)
 
 const Home: NextPage = () => {
 
-  const {data, error} = useSWR('https://dummyapi.io/data/v1/user?page=1&limit=10', fetcher)
+  const {data, error} = useSWR(url, fetcher)
 
   if (error) return <div>failed to load</div>
   if (!data) return <div>loading...</div>
@@ -53,7 +52,7 @@ const Home: NextPage = () => {
   return (
     <Box sx={{width: '100%'}}>
       <h1 style={{textAlign: 'center'}}>HomePage</h1>
-      <DataTable data={data.data}/>
+      <DataTable data={data}/>
     </Box>
   )
 }
