@@ -38,8 +38,7 @@ function DataTable(props: {data: rawData[]}) {
   );
 }
 
-//const url = 'https://dummyapi.io/data/v1/user?page=1&limit=20'
-const url = 'http://localhost:3000/api/people'
+const url = '/api/people'
 const fetcher = () => axios.get(url).then(res => res.data)
 
 const Home: NextPage = () => {
